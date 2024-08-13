@@ -42,7 +42,8 @@ const EventsList = () => {
         <ul className='event-ul'>
         {
             events.map(each => {
-              let sizeOfUploads = each.uploads.split(" ")
+              let sizeOfUploads = each.uploads.split(" ").splice(0,2)
+              
               return (
                 <li className='each-li' key={each.event_id}>
                   <div className='li-details-section'>
@@ -54,15 +55,17 @@ const EventsList = () => {
                     < div className='center'>
                     {
                       sizeOfUploads.map((each, index) => {
-                        const type = each.split(".").pop()                        
-                        if(type === "jpg"){
-                          return <img key={index} className='video' src={each}/>
-                        }else if (type === "mp4"){
-                          return <video key={index} className='video'>
-                          <source src={each} />
-                          Your browser does not support the video tag.
-                        </video>
-                        }
+                        const type = each.split(".").pop() 
+                        
+                          if(type === "jpg"){
+                            return <img key={index} className='video' src={each}/>
+                          }else if (type === "mp4"){
+                            return <video key={index} className='video'>
+                            <source src={each} />
+                            Your browser does not support the video tag.
+                          </video>
+                          
+                          }                                         
                       }                      
                       )
                     }
