@@ -16,7 +16,7 @@ const EventsList = () => {
 
   const callToServer = async() => {
     const jwtToken = Cookies.get("jwt") 
-    const url = "https://vikasbabuauasxrjscprqui5.drops.nxtwave.tech/get-events/"
+    const url = "https://node-infini.onrender.com/get-events/"
     const options = {
       method:"GET",
       headers: {
@@ -53,18 +53,17 @@ const EventsList = () => {
                   <div className='li-images-section'>             
                     < div className='center'>
                     {
-                      sizeOfUploads.map(each => {
-                        const type = each.split(".").pop()
-                        
+                      sizeOfUploads.map((each, index) => {
+                        const type = each.split(".").pop()                        
                         if(type === "jpg"){
-                          return <img key={each} src={each}/>
+                          return <img key={index} className='video' src={each}/>
                         }else if (type === "mp4"){
-                          return <video  key={each} className='video'>
-                          <source className='video' src={each}/>
+                          return <video key={index} className='video'>
+                          <source src={each} />
+                          Your browser does not support the video tag.
                         </video>
                         }
-                      }
-                      
+                      }                      
                       )
                     }
                       <Link to={`/${useraname}/${each.event_id}/mode=${userId}`}>more</Link>

@@ -48,7 +48,7 @@ const UploadData = () => {
       fileUrls: fileUrls      
     }
 
-    const url = "https://vikasbabuauasxrjscprqui5.drops.nxtwave.tech/add-events/"
+    const url = "https://node-infini.onrender.com/add-events/"
     const jwtToken = Cookies.get("jwt")
     const options = {
       method: "POST",

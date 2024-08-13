@@ -1,0 +1,21 @@
+.list{
+    width: 85%;
+    padding: 0px;;
+    display: flex;
+}
+
+.each-img{
+    height: 200px;
+    width: 400px;
+    margin: 10px;
+}
+.event-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+span{
+    color: blueviolet;
+    font-weight: 600;
+}

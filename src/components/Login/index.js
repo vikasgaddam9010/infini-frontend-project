@@ -12,7 +12,7 @@ const Login = () => {
 
   const submitHandler =  async event => {
     event.preventDefault()
-    const url = "https://vikasbabuauasxrjscprqui5.drops.nxtwave.tech/log-in/"
+    const url = "https://node-infini.onrender.com/log-in/"
     const options = {
       method: "POST",
       headers: {

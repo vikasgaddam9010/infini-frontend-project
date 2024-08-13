@@ -13,7 +13,7 @@ const Registration = () => {
   const submitHandler = async event => {
     event.preventDefault()
     if(username !== "" && password !== ""){
-      const url = 'https://vikasbabuauasxrjscprqui5.drops.nxtwave.tech/register/'
+      const url = 'https://node-infini.onrender.com/register/'
       const options = {
         method: "POST",
         headers: {
