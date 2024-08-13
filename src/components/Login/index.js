@@ -58,7 +58,7 @@ const Login = () => {
           Log in
         </button>
         <p>{errMsg}</p>
-        <Link to="/registration/" className='login-btn'>
+        <Link to="/register/" className='login-btn'>
           Registration
         </Link>
       </form>

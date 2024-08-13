@@ -11,7 +11,7 @@ import './App.css'
 const App = () => (
   <BrowserRouter>
     <Routes>
-      <Route exact path='/registation' element={<Registration />} />
+      <Route exact path='/register' element={<Registration />} />
       <Route exact path='/login' element={<Login />} />
       <Route exact path='/events-list' element={<EventsList />} />
       <Route exact path='/upload-event-data' element={<UploadData />} />
