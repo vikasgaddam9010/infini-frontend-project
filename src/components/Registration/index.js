@@ -1,5 +1,6 @@
 import {useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, Link} from 'react-router-dom'
+import {v4} from 'uuid'
 
 import './index.css'
 
@@ -18,15 +19,14 @@ const Registration = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body : JSON.stringify({username, password})
+        body : JSON.stringify({id: v4(), username, password})
       }
+      //console.log({id: v4(), username, password})
       const dbRes = await fetch(url, options)
       const data = await dbRes.json()
       setDbRes(data.message)
       if(dbRes.ok){
-        navigator('/login')
-      }
-        
+        navigator('/login') }
       }else{
         return alert("Please Input Username and Password")
       }
@@ -60,6 +60,9 @@ const Registration = () => {
         <button type='submit' className='btn'>
           Register Here
         </button>
+        <Link to="/login/" className='login-btn'>
+          Login
+        </Link>
         <p>{dbRes}</p>
       </form>
     </div>

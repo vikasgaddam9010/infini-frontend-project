@@ -3,17 +3,19 @@ import {useEffect, useState} from 'react'
 import Cookies from 'js-cookie'
 
 import './index.css'
+import Header from '../Header'
 
 const EventsList = () => {
   const [events , setEvents] = useState([])
-  const [eventList , setEventList] = useState([])
+  const [useraname , setUsername] = useState('')
+  const [userId, setUserId] = useState("")
+
   useEffect(()=> {
       callToServer();         
   }, [])
 
   const callToServer = async() => {
-    const jwtToken = Cookies.get("jwt")
-    console.log(jwtToken) 
+    const jwtToken = Cookies.get("jwt") 
     const url = "https://vikasbabuauasxrjscprqui5.drops.nxtwave.tech/get-events/"
     const options = {
       method:"GET",
@@ -23,25 +25,62 @@ const EventsList = () => {
     }
     const serverRes =  await fetch(url, options)
     const serverResJsonData = await serverRes.json()
-    setEvents(serverResJsonData)
 
-    const mediaItems = serverResJsonData[0].uploades.split(", ")
-    setEventList(mediaItems)
+    setUserId(serverResJsonData.id)
+    setUsername(serverResJsonData.username)
+    setEvents(serverResJsonData.dbRes)
   }
-  console.log(eventList)
-  console.log(events)
+
   return (
+    <>
+    <Header/>
+    
     <div className='events-container'>
       <h1>Events List</h1>
-      {eventList.length > 0 ? (
+      {events.length > 0 ? (
         <>
+        <ul className='event-ul'>
+        {
+            events.map(each => {
+              let sizeOfUploads = each.uploads.split(" ")
+              return (
+                <li className='each-li' key={each.event_id}>
+                  <div className='li-details-section'>
+                  <p>Title:-{each.event_title}</p>
+                  <p>ID:- {each.event_id}</p>
+
+                  </div>
+                  <div className='li-images-section'>             
+                    < div className='center'>
+                    {
+                      sizeOfUploads.map(each => {
+                        const type = each.split(".").pop()
+                        
+                        if(type === "jpg"){
+                          return <img key={each} src={each}/>
+                        }else if (type === "mp4"){
+                          return <video  key={each} className='video'>
+                          <source className='video' src={each}/>
+                        </video>
+                        }
+                      }
+                      
+                      )
+                    }
+                      <Link to={`/${useraname}/${each.event_id}/mode=${userId}`}>more</Link>
+                    </div>
+                  </div>             
+                </li>
+              )
+            })
+          }
+
+        </ul>
+          
           <Link className='btn' type='submit' to='/upload-event-data'>
             Click Here to Add Events
           </Link>
-          {
-            eventList.map(each => (<img src={each}/>))
-          }
-          <h1>Vikas</h1>
+          
         </>
       ) : (
         <>
@@ -54,6 +93,7 @@ const EventsList = () => {
         </>
       )}
     </div>
+    </>    
   )
 }
 

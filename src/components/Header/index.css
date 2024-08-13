@@ -1,0 +1,8 @@
+.header{
+    height: 100px;
+    text-align: right;
+}
+.logout-btn{
+    padding:  5px 10px ;
+    margin: 20px;
+}

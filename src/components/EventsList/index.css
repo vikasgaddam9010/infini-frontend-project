@@ -12,7 +12,38 @@
     width: 60%;
     border: 3px solid lightgray;
     display: flex;
-  
     align-items: center;
     justify-content: center;
+  }
+  .center{
+    display: flex;
+    align-items: center;
+  }
+  img{
+    width: 50px;
+    margin-right: 10px;
+  }
+  .video{
+    width: 50px;
+    margin-right: 10px
+  }
+  .event-ul{
+    padding: 0px;
+    list-style-type: none;
+    
+  }
+  .li-details-section{
+    width: 50%;
+  }
+  .li-images-section{
+    width: 50%;
+  }
+  .each-li{
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid lightgray;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }

@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, Link} from 'react-router-dom'
 import Cookies from 'js-cookie'
 
 import './index.css'
@@ -58,6 +58,9 @@ const Login = () => {
           Log in
         </button>
         <p>{errMsg}</p>
+        <Link to="/registation/" className='login-btn'>
+          Registration
+        </Link>
       </form>
     </div>
   )

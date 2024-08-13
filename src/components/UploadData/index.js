@@ -2,9 +2,10 @@ import React, {useState} from 'react'
 import {v4} from 'uuid'
 import {TiDelete} from 'react-icons/ti'
 import Cookies from 'js-cookie'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, Link} from 'react-router-dom'
 
 import './index.css'
+import Header from '../Header'
 
 const UploadData = () => {
   const [title, setTitle] = useState('')
@@ -78,7 +79,11 @@ const UploadData = () => {
   }
 
   return (
+    <>
+      <Header/>
+    
     <div className='main-container'>
+      
       <h1>Upload Media</h1>
       <form onSubmit={submitHandler} className='form-container'>
         <label className='label' htmlFor='title'>
@@ -118,11 +123,15 @@ const UploadData = () => {
             </ul>
           )}
         </div>
+        <div className="d-flex-space-between"> 
         <button type='submit' className='btn'>
           Upload Media
         </button>
+        <Link to="/events-list" type="button" className='btn'>Back</Link>
+        </div>
       </form>
     </div>
+    </>
   )
 }
 
