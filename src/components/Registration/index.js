@@ -1,31 +1,36 @@
 import {useState} from 'react'
-import {json, useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 
 import './index.css'
 
 const Registration = () => {
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
+  const [dbRes , setDbRes] = useState('')
   const navigator = useNavigate()
 
   const submitHandler = async event => {
     event.preventDefault()
-    //console.log(userName, password)
-    const url = 'https://vikasbabuauasxrjscprqui5.drops.nxtwave.tech/register/'
-    const options = {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body : JSON.stringify({username, password})
-    }
-    const dbRes = await fetch(url, options)
-    const data = await dbRes.json()
-    console.log(dbRes)
-    console.log(data.message)
-    if(dbRes.ok){
-      navigator('/login')
-    }
+    if(username !== "" && password !== ""){
+      const url = 'https://vikasbabuauasxrjscprqui5.drops.nxtwave.tech/register/'
+      const options = {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body : JSON.stringify({username, password})
+      }
+      const dbRes = await fetch(url, options)
+      const data = await dbRes.json()
+      setDbRes(data.message)
+      if(dbRes.ok){
+        navigator('/login')
+      }
+        
+      }else{
+        return alert("Please Input Username and Password")
+      }
+      
   }
 
   return (
@@ -55,6 +60,7 @@ const Registration = () => {
         <button type='submit' className='btn'>
           Register Here
         </button>
+        <p>{dbRes}</p>
       </form>
     </div>
   )

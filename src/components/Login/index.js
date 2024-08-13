@@ -1,16 +1,17 @@
 import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 import './index.css'
 
 const Login = () => {
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
+  const [errMsg, setErrMsg] = useState('')
   const navigator = useNavigate()
 
   const submitHandler =  async event => {
     event.preventDefault()
-    console.log(username, password)
     const url = "https://vikasbabuauasxrjscprqui5.drops.nxtwave.tech/log-in/"
     const options = {
       method: "POST",
@@ -21,12 +22,14 @@ const Login = () => {
     }
     const dbRes = await fetch(url, options)
     const data = await dbRes.json()
-    console.log(dbRes)
-    console.log(data)
-
-
-    //navigator('/events-list')
+    setErrMsg(data.message)
+    
+    if(dbRes.ok){
+      Cookies.set("jwt", data.jwtToken, {expires: 30})
+      navigator('/events-list')
+    }
   }
+  //Cookies.remove('jwt');
   return (
     <div className='main-container'>
       <form onSubmit={submitHandler} className='form-container'>
@@ -54,6 +57,7 @@ const Login = () => {
         <button type='submit' className='btn'>
           Log in
         </button>
+        <p>{errMsg}</p>
       </form>
     </div>
   )
