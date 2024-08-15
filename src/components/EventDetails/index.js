@@ -63,7 +63,7 @@ const EventDetails = () => {
         }
 
         const serverRes = await fetch(url, options)
-        console.log(serverRes)
+   
 
         if(serverRes.ok){
             const sjsonData = await serverRes.json()
