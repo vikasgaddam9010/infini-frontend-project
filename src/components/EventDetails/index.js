@@ -27,7 +27,7 @@ const EventDetails = () => {
     useEffect(() => {getFullList()}, [])
 
     const getFullList = async () => {
-        const url = `http://localhost:3001/all-items/${event_id}/`
+        const url = `https://node-infini.onrender.com/all-items/${event_id}/`
         const jwtToken = Cookies.get("jwt")
         const options = {
             method: "GET",
@@ -50,15 +50,10 @@ const EventDetails = () => {
         }else{
             setState(renderState.failed)
         }   
-    }
-
-    const message = "Hi, Here You can find your Event Media";
-    const url = "http://localhost:3000/guest";
-  
-  
+    }  
 
     const handleToDeleteEvent = async () => {
-        const url = `http://localhost:3001/delete/${event_id}`
+        const url = `https://node-infini.onrender.com/delete/${event_id}`
         const jwtToken = Cookies.get("jwt")
         const options = {
             method: "DELETE",

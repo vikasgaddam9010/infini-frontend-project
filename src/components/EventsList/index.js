@@ -16,7 +16,7 @@ const EventsList = () => {
 
   const callToServer = async() => {
     const jwtToken = Cookies.get("jwt") 
-    const url = "http://localhost:3001/get-events/"
+    const url = "https://node-infini.onrender.com/get-events/"
     const options = {
       method:"GET",
       headers: {

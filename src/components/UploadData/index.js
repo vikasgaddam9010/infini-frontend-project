@@ -38,7 +38,7 @@ const UploadData = () => {
 
   const fetchEventDetails = async (id ) => {
     setState(renderState.loader)
-    const url = `http://localhost:3001/get-event-details/${id}`
+    const url = `https://node-infini.onrender.com/get-event-details/${id}`
 
     const options = {
       method: "GET",
@@ -117,7 +117,7 @@ const UploadData = () => {
       fileUrls: files
     }
 
-    const url = "http://localhost:3001/add-events/"
+    const url = "https://node-infini.onrender.com/add-events/"
     
     const options = {
       method: "POST",
@@ -168,7 +168,7 @@ const UploadData = () => {
       files: JSON.stringify(modified)
     }
 
-    const url = `http://localhost:3001/update-event-detail/`
+    const url = `https://node-infini.onrender.com/update-event-detail/`
     const options = {
       method : "PUT",
       headers: {

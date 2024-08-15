@@ -13,7 +13,7 @@ const Registration = () => {
   const submitHandler = async event => {
     event.preventDefault()
     if(username !== "" && password !== ""){
-      const url = 'http://localhost:3001/register/'
+      const url = 'https://node-infini.onrender.com/register/'
       const options = {
         method: "POST",
         headers: {
