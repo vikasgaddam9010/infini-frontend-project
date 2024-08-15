@@ -163,6 +163,7 @@ const UploadData = () => {
 
 
     const hasToUpdate = {
+      title: title,
       event_id: existingData.event_id,
       username: existingData.username,
       files: JSON.stringify(modified)
