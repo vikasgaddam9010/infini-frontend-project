@@ -1,6 +1,7 @@
-import { useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import {useEffect, useState} from 'react'
 import Cookies from 'js-cookie'
+
 
 import Header from '../Header'
 import LoadingView from '../LoadingView'
@@ -18,6 +19,7 @@ const EventDetails = () => {
     const [eventDetails, setEventDetails] = useState("")
     const [mediaLinks, setMedialinks] = useState("")
     const [state, setState] = useState(renderState.initial)
+    const navigator = useNavigate()
 
     useEffect(() => {getFullList()}, [])
 
@@ -37,7 +39,7 @@ const EventDetails = () => {
             const serverResJsonData = await serverRes.json()
             setEventDetails(serverResJsonData.dbRes)
             const updatedMedia = serverResJsonData.dbRes.uploads.split(" ")
-            setMedialinks(updatedMedia)
+            setMedialinks(JSON.parse(updatedMedia))
             setState(renderState.sucess)
         }else{
             setState(renderState.failed)
@@ -48,22 +50,30 @@ const EventDetails = () => {
         <div className='main'>
         <Header/>
         <div className='event-container'>
-        <h1>Uploader Name: <span>{eventDetails.username.toUpperCase()}</span></h1>
-        <p>Event Title: <span>{eventDetails.event_title}</span></p>
+            <div className='event-details-d-flex'>
+                <div >
+                    <h1>Uploader Name: <span>{eventDetails.username.toUpperCase()}</span></h1>
+                    <p>Event Title: <span>{eventDetails.event_title}</span></p>
+                </div>
+                <div className='column'>
+                    <button onClick={() => navigator(`/edit-event-data/${event_id}`)} style={{color: 'blue', border:"1px solid blue"}} className='button-edit-delete'>Edit</button>
+                    <button style={{color: 'brown', border:"1px solid brown"}} className='button-edit-delete'>Share</button>
+                    <button style={{color: 'red', border:"1px solid red"}} className='button-edit-delete'>Delete</button>
+                </div>
+            </div>
         <div className='list'>
         {
             mediaLinks.length > 0 && mediaLinks.map((each, index )=> {
-                const type = each.split(".").pop()
+                
+                const type = each.url.split(".").pop()
                 if(type === "mp4"){
-                    return <video key={index} controls className="each-img" name="media"><source src={each} type='video/mp4' /></video>
+                    return <video key={index} controls className="each-img" name="media"><source src={each.url} type='video/mp4' /></video>
                 }else if( type === "jpg"){
-                    return <img  className="each-img" key={index} src={each}/>
+                    return <img  className="each-img" key={index} src={each.url}/>
                 }
             })    
         }
-
         </div>
-        
         </div>
     </div>
 

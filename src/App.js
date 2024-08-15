@@ -14,7 +14,8 @@ const App = () => (
       <Route exact path='/register' element={<Registration />} />
       <Route exact path='/login' element={<Login />} />
       <Route exact path='/events-list' element={<EventsList />} />
-      <Route exact path='/upload-event-data' element={<UploadData />} />
+      <Route exact path='/upload-event-data/' element={<UploadData />} />
+      <Route exact path='/edit-event-data/:event_id' element={<UploadData />} />
       <Route exact path='/:username/:event_id/:userid' element={<EventDetails />} />
     </Routes>
   </BrowserRouter>

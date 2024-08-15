@@ -20,16 +20,18 @@ const EventsList = () => {
     const options = {
       method:"GET",
       headers: {
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${jwtToken}`
       }
     }
     const serverRes =  await fetch(url, options)
     const serverResJsonData = await serverRes.json()
-
+    //console.log(serverResJsonData)
     setUserId(serverResJsonData.id)
     setUsername(serverResJsonData.username)
     setEvents(serverResJsonData.dbRes)
   }
+  console.log(events)
 
   return (
     <>
@@ -42,8 +44,8 @@ const EventsList = () => {
         <ul className='event-ul'>
         {
             events.map(each => {
-              let sizeOfUploads = each.uploads.split(" ").splice(0,2)
-              
+              const  z = JSON.parse(each.uploads)
+              let sizeOfUploads = z.slice(0, 2)
               return (
                 <li className='each-li' key={each.event_id}>
                   <div className='li-details-section'>
@@ -55,13 +57,13 @@ const EventsList = () => {
                     < div className='center'>
                     {
                       sizeOfUploads.map((each, index) => {
-                        const type = each.split(".").pop() 
+                        const type = each.url.split(".").pop()
                         
                           if(type === "jpg"){
-                            return <img key={index} className='video' src={each}/>
+                            return <img key={index} className='video' src={each.url}/>
                           }else if (type === "mp4"){
                             return <video key={index} className='video'>
-                            <source src={each} />
+                            <source src={each.url} />
                             Your browser does not support the video tag.
                           </video>
                           
