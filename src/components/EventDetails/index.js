@@ -1,6 +1,9 @@
-import {useNavigate, useParams} from 'react-router-dom'
+import {json, useNavigate, useParams} from 'react-router-dom'
 import {useEffect, useState} from 'react'
 import Cookies from 'js-cookie'
+
+import Modal from 'react-modal';
+import { WhatsappShareButton, TelegramShareButton, WhatsappIcon, TelegramIcon } from 'react-share';
 
 
 import Header from '../Header'
@@ -15,7 +18,7 @@ const renderState = {
 }
 
 const EventDetails = () => {
-    const {event_id} = useParams()
+    const {event_id } = useParams()
     const [eventDetails, setEventDetails] = useState("")
     const [mediaLinks, setMedialinks] = useState("")
     const [state, setState] = useState(renderState.initial)
@@ -24,8 +27,7 @@ const EventDetails = () => {
     useEffect(() => {getFullList()}, [])
 
     const getFullList = async () => {
-        setState(renderState.loader)
-        const url = `https://node-infini.onrender.com/all-items/${event_id}/`
+        const url = `http://localhost:3001/all-items/${event_id}/`
         const jwtToken = Cookies.get("jwt")
         const options = {
             method: "GET",
@@ -34,11 +36,15 @@ const EventDetails = () => {
             }
         }
         const serverRes = await fetch(url, options)
-        
+
+        const serverResJsonData = await serverRes.json()
+        console.log(serverResJsonData)
+
+
         if(serverRes.ok){
-            const serverResJsonData = await serverRes.json()
             setEventDetails(serverResJsonData.dbRes)
-            const updatedMedia = serverResJsonData.dbRes.uploads.split(" ")
+
+            const updatedMedia = serverResJsonData.dbRes.uploads
             setMedialinks(JSON.parse(updatedMedia))
             setState(renderState.sucess)
         }else{
@@ -46,19 +52,47 @@ const EventDetails = () => {
         }   
     }
 
+    const message = "Hi, Here You can find your Event Media";
+    const url = "http://localhost:3000/guest";
+  
+  
+
+    const handleToDeleteEvent = async () => {
+        const url = `http://localhost:3001/delete/${event_id}`
+        const jwtToken = Cookies.get("jwt")
+        const options = {
+            method: "DELETE",
+            headers: {
+                "Authorization" : `Bearer ${jwtToken}`,                
+            }
+        }
+
+        const serverRes = await fetch(url, options)
+        console.log(serverRes)
+
+        if(serverRes.ok){
+            const sjsonData = await serverRes.json()
+            console.log(sjsonData)
+            return navigator("/events-list/")
+        }   
+    }
+
     const getSccussView = () => (
-        <div className='main'>
+        <>
         <Header/>
+        
+        <div className='main'>
+        
         <div className='event-container'>
             <div className='event-details-d-flex'>
                 <div >
-                    <h1>Uploader Name: <span>{eventDetails.username.toUpperCase()}</span></h1>
+                    <h1>Uploader Name: <span>{eventDetails.username}</span></h1>
                     <p>Event Title: <span>{eventDetails.event_title}</span></p>
                 </div>
                 <div className='column'>
                     <button onClick={() => navigator(`/edit-event-data/${event_id}`)} style={{color: 'blue', border:"1px solid blue"}} className='button-edit-delete'>Edit</button>
                     <button style={{color: 'brown', border:"1px solid brown"}} className='button-edit-delete'>Share</button>
-                    <button style={{color: 'red', border:"1px solid red"}} className='button-edit-delete'>Delete</button>
+                    <button onClick={handleToDeleteEvent} style={{color: 'red', border:"1px solid red"}} className='button-edit-delete'>Delete</button>
                 </div>
             </div>
         <div className='list'>
@@ -76,7 +110,7 @@ const EventDetails = () => {
         </div>
         </div>
     </div>
-
+    </>
     )
 
     const getFailedView = () => (

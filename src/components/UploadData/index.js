@@ -22,6 +22,8 @@ const UploadData = () => {
   const [media, setMedia] = useState([])
   const [editMode, setEditMode] = useState(false)
 
+  //console.log(existingData)
+
   const { event_id } = useParams();
   const navigator = useNavigate()
   const jwtToken = Cookies.get("jwt")
@@ -32,11 +34,12 @@ const UploadData = () => {
       fetchEventDetails(event_id);
      }
     }
-    , [event_id])
+    , [])
 
   const fetchEventDetails = async (id ) => {
     setState(renderState.loader)
-    const url = `https://node-infini.onrender.com/get-event-details/${id}`
+    const url = `http://localhost:3001/get-event-details/${id}`
+
     const options = {
       method: "GET",
         headers: {
@@ -48,14 +51,22 @@ const UploadData = () => {
     const serverRes = await fetch(url, options)
     if(serverRes.ok){
       const serverResJsonData = await serverRes.json()
-      setTitle(serverResJsonData.event_title)
+     // console.log(serverResJsonData, JSON.parse(serverResJsonData.uploads))
       setExistingData(serverResJsonData)
-   //   console.log(serverResJsonData)
+
+      setTitle(serverResJsonData.event_title)
+
+    //  console.log(serverResJsonData)
+
+      const updated = JSON.parse(serverResJsonData.uploads)
+   //   console.log(updated)
+      setMedia(updated)
+
+      
       setState(renderState.sucess)
     }else{
       setState(renderState.failed)
     }
-    
   }  
   
 
@@ -64,7 +75,7 @@ const UploadData = () => {
     formDetails.append('file', file)
     formDetails.append('upload_preset', typeUplod)
 
-    const url = `https://api.cloudinary.com/v1_1/dagtd0cm9/${typeMedia}/upload`
+    const url = `http://api.cloudinary.com/v1_1/dagtd0cm9/${typeMedia}/upload`
 
     const options = {
       method: 'POST',
@@ -73,14 +84,21 @@ const UploadData = () => {
     const cloudRes = await fetch(url, options)
      const r = await cloudRes.json()
      //console.log(r)
-     //console.log(r.url, r.display_name)
-     return {url:r.url, name:r.display_name, type: r.format}
+     return {url:r.url, name:r.display_name+"."+r.format, type: r.format}
   }
 
 
   const submitHandler = async event => {
-    setState(renderState.loader)
     event.preventDefault()
+
+    if(title === ""){
+      return alert("Plase Enter the Title")
+    }
+    
+    if(media.length === 0){
+      return alert("Please Upload Photos/Videos")      
+    }
+    setState(renderState.loader)
     const r = media.map(eachMedia => {
       if(eachMedia.type.split("/")[0] === "image"){
         return mediaUpload(eachMedia, eachMedia.type.split("/")[0], 'image_upload')      
@@ -89,22 +107,20 @@ const UploadData = () => {
       }
     })
     const uploadedData = await Promise.all(r) //waits for all responses to be done.
-    //console.log("upload",uploadedData)
+
+    
     const files = JSON.stringify(uploadedData)
 
-    if(title === ""){
-      return alert("Plase Input All Fileds")
-    }
     const eventDetails = {
       eventId: v4(),
       eventTitle: title,
       fileUrls: files
     }
 
-    const url = editMode ? `https://node-infini.onrender.com/update-event/${event_id}/` : "https://node-infini.onrender.com/add-events/"
+    const url = "http://localhost:3001/add-events/"
     
     const options = {
-      method: editMode ? "PUT" : "POST",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         'Authorization': `Bearer ${jwtToken}`
@@ -114,76 +130,107 @@ const UploadData = () => {
 
     const serverRes = await fetch(url, options)
     const json = await serverRes.json()
-    //console.log(json)
     if(serverRes.ok){
       setState(renderState.sucess)
+      console.log("Sucess")
       return navigator('/events-list')
+    }else{
+      setState(renderState.failed)
     }
   }
 
+  const submitEditHandler = async event => {
+    event.preventDefault()
+    setState(renderState.loader)
+
+    const filteredMedia = media.filter(each => each.lastModified)
+    
+    const r = filteredMedia.map(each=>{
+
+        if(each.type.split("/")[0] === "image"){
+          return mediaUpload(each, each.type.split("/")[0], 'image_upload')      
+        }else{
+          return mediaUpload(each, each.type.split("/")[0], 'video_uploads')      
+    }})
+    const uploadedData = await Promise.all(r)
+    const reUploadedMedia = media.concat(uploadedData)
+
+    const modified = reUploadedMedia.filter(each => each.url)
+
+
+    modified.event_id = existingData.event_id
+    modified.username = existingData.username
+
+
+    const hasToUpdate = {
+      event_id: existingData.event_id,
+      username: existingData.username,
+      files: JSON.stringify(modified)
+    }
+
+    const url = `http://localhost:3001/update-event-detail/`
+    const options = {
+      method : "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${jwtToken}`
+      },
+      body: JSON.stringify(hasToUpdate)
+      }
+      const serverRes = await fetch(url, options)
+   
+      
+      if(serverRes.ok){
+        setState(renderState.sucess)
+        navigator(`/events-list`)
+
+      }else{
+        setState(renderState.failed)
+      }
+  }
+
   const handleFileChange = event => {
-    const filesArray = Array.from(event.target.files)
-    setMedia(filesArray)
+    if(media.length === 0){
+      const files = Array.from(event.target.files)
+      setMedia(files)
+    }else{
+      const newFiles = Array.from(event.target.files)   
+
+      const mergeAndRemoveDuplicates = (arr1, arr2) => {
+          const combined = [...arr1, ...arr2];
+
+          const uniqueMap = new Map();
+
+          combined.forEach(item => {
+            
+              if (!uniqueMap.has(item.name)) {
+                  uniqueMap.set(item.name, item);
+              }
+          });
+          return Array.from(uniqueMap.values());
+      };
+
+      const result = mergeAndRemoveDuplicates(media, newFiles);
+
+      setMedia(result);
+    }
   }
 
-  const handleToAddFiles = event => {
-    const parsefied = JSON.parse(existingData.uploads)
-    const selectedFiles = Array.from(event.target.files)
-    //selectedFiles.map(eachFile => console.log(eachFile.name.split(".")[0]))
-    //parsefied.map(eachFile => console.log(eachFile.name.split(".")[0]))
-    const names = parsefied.map(each => each.name)
-    //console.log(names)
-    selectedFiles.filter(eachMedia => {
-      console.log(names, names, eachMedia)
-      const r = parsefied.filter(e => console.log(e))
-    })
-
-    /*console.log(event.target.files[0].name.split(".")[0])
-    const name = event.target.files[0].name.split(".")[0]
-    const r = parsefied.filter(each => each.name !== name)
-    console.log(r)*/
-
-
+  const deleteMedia = name => {
+    const result = media.filter(each => each.name !== name)
+    setMedia(result)
   }
 
-  const deleteMedia = index => {
-    //console.log(index)
-    const updatedMedia = media.filter((file, i) => i !== index)
-    setMedia(updatedMedia)
-  }
 
-  const getEditFiles = () => {
-    const {uploads} = existingData
-    const result = JSON.parse(uploads)
-   //console.log(result.map(each => each))
-    return (
-      result.length > 0 && (
-        <ul className='ul'>
-          {result.map((file, index) => {
-            //console.log(file.username)
-            return (
-              <li key={index}>
-                {file.name}{' '}
-                <TiDelete
-                  onClick={() => deleteMedia(index)}
-                  className='delete-icon'
-                />
-              </li>
-            )
-          })}
-        </ul>
-      )
-    )
-}
-  const getExitingFiles = () =>(
+const getEachMediaName = () =>(
     media.length > 0 && (
       <ul className='ul'>
-        {media.map((file, index) => {
+        {media.map((file) => {
           return (
-            <li key={index}>
+            <li key={file.name}>
               {file.name}{' '}
               <TiDelete
-                onClick={() => deleteMedia(index)}
+                onClick={() => deleteMedia(file.name)}
                 className='delete-icon'
               />
             </li>
@@ -199,7 +246,7 @@ const UploadData = () => {
     
     <div className='main-container'>   
       <h1>{editMode ? 'Edit Media' : 'Upload Media'}</h1>
-      <form onSubmit={submitHandler} className='form-container'>
+      <form onSubmit={editMode ? submitEditHandler : submitHandler} className='form-container'>
         <label className='label' htmlFor='title'>
           {editMode ? 'Edit Title' : 'Title Of Event'}
         </label>
@@ -214,23 +261,15 @@ const UploadData = () => {
         <label className='label' htmlFor='upload'>
         {editMode ? 'Edit Media' : 'Upload Media'}
         </label>
-        {
-          editMode ? (<input
-            onChange={handleToAddFiles}
-            id='upload'
-            type='file'
-            accept='.jpg,.mp4'
-            multiple
-          />) : (<input
+        <input
             onChange={handleFileChange}
             id='upload'
             type='file'
-            accept='.jpg,.mp4'
+            accept='.jpg,.mp4,'
             multiple
-          />)
-        }       
+          />   
         <div>
-          {editMode ? getEditFiles() : getExitingFiles()}
+          {getEachMediaName()}
         </div>
         <div className="d-flex-space-between"> 
         <button type='submit' className='btn'>

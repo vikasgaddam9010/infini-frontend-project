@@ -18,8 +18,6 @@
   .ul {
     padding: 0px;
     list-style-type: none;
-    height: 100px;
-    overflow: auto;
   }
   .delete-icon {
     color: red;

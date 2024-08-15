@@ -12,7 +12,7 @@ const Login = () => {
 
   const submitHandler =  async event => {
     event.preventDefault()
-    const url = "https://node-infini.onrender.com/log-in/"
+    const url = "http://localhost:3001/log-in/"
     const options = {
       method: "POST",
       headers: {

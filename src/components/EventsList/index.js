@@ -16,7 +16,7 @@ const EventsList = () => {
 
   const callToServer = async() => {
     const jwtToken = Cookies.get("jwt") 
-    const url = "https://node-infini.onrender.com/get-events/"
+    const url = "http://localhost:3001/get-events/"
     const options = {
       method:"GET",
       headers: {
@@ -26,12 +26,11 @@ const EventsList = () => {
     }
     const serverRes =  await fetch(url, options)
     const serverResJsonData = await serverRes.json()
-    //console.log(serverResJsonData)
+
     setUserId(serverResJsonData.id)
     setUsername(serverResJsonData.username)
     setEvents(serverResJsonData.dbRes)
   }
-  console.log(events)
 
   return (
     <>
