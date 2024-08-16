@@ -43,7 +43,7 @@ const GusetEventDetails = () => {
         } 
     }  
     console.log(useParams())
-    const link=`http://localhost:3000/${eventDetails.username}/${eventDetails.event_id}`
+    const link=`https://infini-frontend-project.vercel.app/${eventDetails.username}/${eventDetails.event_id}`
     console.log(link)
 
     const getSccussView = () => (
@@ -74,7 +74,7 @@ const GusetEventDetails = () => {
                             </div>
                             <button
                                 type="button"
-                                className="trigger-button"
+                                style={{color: 'black', border:"1px solid brown", borderRadius:"5px"}}
                                 onClick={() => close()}
                                 >
                                 Close
