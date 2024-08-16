@@ -76,7 +76,7 @@ const GusetEventDetails = () => {
                                 style={{color: 'black', border:"1px solid brown", borderRadius:"5px"}}
                                 onClick={() => close()}
                                 >
-                                Closemnbjm
+                                Close
                             </button>
                         </div>
                         )}
