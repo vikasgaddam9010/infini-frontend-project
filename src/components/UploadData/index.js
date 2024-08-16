@@ -61,7 +61,7 @@ const UploadData = () => {
     formDetails.append('file', file)
     formDetails.append('upload_preset', typeUplod)
 
-    const url = `http://api.cloudinary.com/v1_1/dagtd0cm9/${typeMedia}/upload`
+    const url = `https://api.cloudinary.com/v1_1/dagtd0cm9/${typeMedia}/upload`
 
     const options = {
       method: 'POST',
