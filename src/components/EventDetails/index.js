@@ -68,7 +68,7 @@ const EventDetails = () => {
     }
 
 
-    const link=`http://localhost:3000/${eventDetails.username}/${event_id}/mode=GUEST`
+    const link=`https://infini-frontend-project.vercel.app/${eventDetails.username}/${event_id}/mode=GUEST`
 
     const getSccussView = () => (
         <>
@@ -99,7 +99,7 @@ const EventDetails = () => {
                             </div>
                             <button
                                 type="button"
-                                className="trigger-button"
+                                style={{color: 'black', border:"1px solid black", padding:"5px 12px", borderRadius:"3px", backgroundColor:"white"}}
                                 onClick={() => close()}
                                 >
                                 Close

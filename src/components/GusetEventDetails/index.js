@@ -69,7 +69,6 @@ const GusetEventDetails = () => {
                         <div className='pop-up-constainer' style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"space-around"}}>
                             <div style={{display:'flex', justifyContent:"center"}}>
                                 <span>Click Copy Icon to Copy the Link</span>
-
                                 <CopyButton textToCopy={link}/>
                             </div>
                             <button
@@ -77,7 +76,7 @@ const GusetEventDetails = () => {
                                 style={{color: 'black', border:"1px solid brown", borderRadius:"5px"}}
                                 onClick={() => close()}
                                 >
-                                Close
+                                Closemnbjm
                             </button>
                         </div>
                         )}
