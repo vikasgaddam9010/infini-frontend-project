@@ -35,7 +35,6 @@ const EventsList = () => {
       }
     }
     const serverRes =  await fetch(url, options)
-    
 
     if(serverRes.ok){
       const serverResJsonData = await serverRes.json()

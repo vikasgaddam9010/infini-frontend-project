@@ -38,9 +38,7 @@ const EventDetails = () => {
         const serverRes = await fetch(url, options)
 
         const serverResJsonData = await serverRes.json()
-        console.log(serverResJsonData)
-
-
+        //console.log(serverResJsonData)
         if(serverRes.ok){
             setEventDetails(serverResJsonData.dbRes)
 
@@ -62,8 +60,7 @@ const EventDetails = () => {
             }
         }
 
-        const serverRes = await fetch(url, options)
-   
+        const serverRes = await fetch(url, options)   
 
         if(serverRes.ok){
             const sjsonData = await serverRes.json()
@@ -74,10 +71,8 @@ const EventDetails = () => {
 
     const getSccussView = () => (
         <>
-        <Header/>
-        
-        <div className='main'>
-        
+        <Header/>        
+        <div className='main'>        
         <div className='event-container'>
             <div className='event-details-d-flex'>
                 <div >
@@ -92,8 +87,7 @@ const EventDetails = () => {
             </div>
         <div className='list'>
         {
-            mediaLinks.length > 0 && mediaLinks.map((each, index )=> {
-                
+            mediaLinks.length > 0 && mediaLinks.map((each, index )=> {                
                 const type = each.url.split(".").pop()
                 if(type === "mp4"){
                     return <video key={index} controls className="each-img" name="media"><source src={each.url} type='video/mp4' /></video>
