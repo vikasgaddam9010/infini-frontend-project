@@ -15,73 +15,48 @@ const renderState = {
     failed: 'failed'
 }
 
-const EventDetails = () => {
-    const {event_id } = useParams()
+const GusetEventDetails = () => {
+    const {userid } = useParams()
     const [eventDetails, setEventDetails] = useState("")
     const [mediaLinks, setMedialinks] = useState("")
     const [state, setState] = useState(renderState.initial)
-    const navigator = useNavigate()
 
     useEffect(() => {getFullList()}, [])
 
     const getFullList = async () => {
         setState(renderState.loader)
-        const url = `https://node-infini.onrender.com/all-items/${event_id}/`
-        const jwtToken = Cookies.get("jwt")
+        const url = `https://node-infini.onrender.com/get-guest-all-items/${userid}/`
         const options = {
             method: "GET",
-            headers: {
-                "Authorization" : `Bearer ${jwtToken}`,                
-            }
         }
         const serverRes = await fetch(url, options)
-
         const serverResJsonData = await serverRes.json()
-        //console.log(serverResJsonData)
+        console.log(serverRes, serverResJsonData)
         if(serverRes.ok){
-            setEventDetails(serverResJsonData.dbRes)
-            const updatedMedia = serverResJsonData.dbRes.uploads
+            setEventDetails(serverResJsonData.message[0])
+            const updatedMedia = serverResJsonData.message[0].uploads
+            console.log(updatedMedia)
             setMedialinks(JSON.parse(updatedMedia))
             setState(renderState.sucess)
         }else{
             setState(renderState.failed)
-        }   
+        } 
     }  
-
-    const handleToDeleteEvent = async () => {
-        const url = `https://node-infini.onrender.com/delete/${event_id}`
-        const jwtToken = Cookies.get("jwt")
-        const options = {
-            method: "DELETE",
-            headers: {
-                "Authorization" : `Bearer ${jwtToken}`,                
-            }
-        }
-
-        const serverRes = await fetch(url, options)   
-
-        if(serverRes.ok){
-            const sjsonData = await serverRes.json()
-            console.log(sjsonData)
-            return navigator("/events-list/")
-        }   
-    }
-
-
-    const link=`http://localhost:3000/${eventDetails.username}/${event_id}/mode=GUEST`
+    console.log(useParams())
+    const link=`http://localhost:3000/${eventDetails.username}/${eventDetails.event_id}`
+    console.log(link)
 
     const getSccussView = () => (
-        <>
-        <Header/>        
-        <div className='main'>        
+        <>      
+        <div className='main-guest'>        
         <div className='event-container'>
             <div className='event-details-d-flex'>
                 <div >
-                    <h1>Uploader Name: <span>{eventDetails.username.toUpperCase()}</span></h1>
+                    <h1>Uploader Name: <span>{eventDetails.username}</span></h1>
                     <p>Event Title: <span>{eventDetails.event_title}</span></p>
                 </div>
                 <div className='column'>
-                    <button onClick={() => navigator(`/edit-event-data/${event_id}`)} style={{color: 'blue', border:"1px solid blue"}} className='button-edit-delete'>Edit</button>
+                    <button disabled style={{color: 'grey', border:"1px solid grey"}} className='button-edit-delete'>Edit</button>
                     <Popup
                         modal
                         trigger={
@@ -93,7 +68,7 @@ const EventDetails = () => {
                         {close => (
                         <div className='pop-up-constainer' style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"space-around"}}>
                             <div style={{display:'flex', justifyContent:"center"}}>
-                                <span>Click to Copy the Link</span>
+                                <span>Click Copy Icon to Copy the Link</span>
 
                                 <CopyButton textToCopy={link}/>
                             </div>
@@ -107,7 +82,7 @@ const EventDetails = () => {
                         </div>
                         )}
                     </Popup>
-                    <button onClick={handleToDeleteEvent} style={{color: 'red', border:"1px solid red"}} className='button-edit-delete'>Delete</button>
+                    <button disabled style={{color: 'grey', border:"1px solid grey"}} className='button-edit-delete'>Delete</button>
                 </div>
             </div>
         <div className='list'>
@@ -140,4 +115,6 @@ const EventDetails = () => {
         return getFailedView()
     }
 }
-export default EventDetails
+
+
+export default GusetEventDetails

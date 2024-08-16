@@ -82,20 +82,8 @@ const EventsList = () => {
     }))
   }
 
-  const failedView = () => (
-    <button type="button" onClick={callToServer}></button>
-  )
-
-
   const getstateWiseVIew = () => {
-    if(renderState.loader === state){
-      return <LoadingView/>
-    }    
-    else if (renderState.sucess === state){
       return sucessView()
-    }else if(renderState.failed === state){
-      return failedView()
-    }
   }
 
   return (
@@ -110,14 +98,11 @@ const EventsList = () => {
           {
             getstateWiseVIew()
           }
-        
-
         </ul>
           
           <Link className='btn' type='submit' to='/upload-event-data'>
             Click Here to Add Events
           </Link>
-          
         </>
       ) : (
         <>

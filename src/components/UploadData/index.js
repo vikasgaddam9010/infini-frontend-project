@@ -20,6 +20,7 @@ const UploadData = () => {
   const [existingData, setExistingData] = useState([])
   const [media, setMedia] = useState([])
   const [editMode, setEditMode] = useState(false)
+  const [state, setState] = useState(renderState.initial)
 
   const { event_id } = useParams();
   const navigator = useNavigate()
@@ -34,6 +35,8 @@ const UploadData = () => {
     , [])
 
   const fetchEventDetails = async (id ) => {
+
+    setState(renderState.sucess)
     const url = `https://node-infini.onrender.com/get-event-details/${id}`
 
     const options = {
@@ -46,12 +49,15 @@ const UploadData = () => {
 
     const serverRes = await fetch(url, options)
     if(serverRes.ok){
+      setState(renderState.sucess)
       const serverResJsonData = await serverRes.json()
       setExistingData(serverResJsonData)
       setTitle(serverResJsonData.event_title)
       const updated = JSON.parse(serverResJsonData.uploads)
       setMedia(updated)
+      
     }else{
+      setState(renderState.failed)
     }
   }  
   
@@ -84,7 +90,7 @@ const UploadData = () => {
     if(media.length === 0){
       return alert("Please Upload Photos/Videos")      
     }
-    
+    setState(renderState.loader)    
     const r = media.map(eachMedia => {
       if(eachMedia.type.split("/")[0] === "image"){
         return mediaUpload(eachMedia, eachMedia.type.split("/")[0], 'image_upload')      
@@ -115,6 +121,7 @@ const UploadData = () => {
     }
 
     const serverRes = await fetch(url, options)
+    setState(renderState.sucess)
     await serverRes.json()
     if(serverRes.ok){
       return navigator('/events-list')
@@ -123,6 +130,7 @@ const UploadData = () => {
 
   const submitEditHandler = async event => {
     event.preventDefault()
+    setState(renderState.loader)
     const filteredMedia = media.filter(each => each.lastModified)
     const r = filteredMedia.map(each=>{
 
@@ -156,10 +164,10 @@ const UploadData = () => {
       },
       body: JSON.stringify(hasToUpdate)
       }
-      const serverRes = await fetch(url, options)
-   
-      
+      const serverRes = await fetch(url, options)    
+
       if(serverRes.ok){
+        setState(renderState.sucess)
         navigator(`/events-list`)
       }
   }
@@ -209,7 +217,12 @@ const getEachMediaName = () =>(
     )
   )
 
-  const getSucessView = () => (
+  const getSucessView = () =>{ 
+
+    const dataUploadApiState = renderState.loader === state ? "Uploading..." : "Upload"
+    const dataEditApiState = renderState.loader === state ? "Editing..." : "Edit"
+
+    return (
     <>
       <Header/>
     <div className='main-container'>   
@@ -240,15 +253,15 @@ const getEachMediaName = () =>(
           {getEachMediaName()}
         </div>
         <div className="d-flex-space-between"> 
-        <button type='submit' className='btn'>
-          {editMode ? 'Edit Input Fileds' : 'Upload Media'}
+        <button type='submit' disabled={renderState.loader === state} className='btn'>
+          {editMode ? dataEditApiState : dataUploadApiState}
         </button>
-        <Link to="/events-list" type="button" className='btn'>{editMode ? 'Cancel': 'Back'}</Link>
+        <Link to="/events-list" type="button" className='btn'>{editMode ? 'Cancel Editing': 'Back'}</Link>
         </div>
       </form>
     </div>
     </>
-  )
+  )}
 
   return getSucessView()
 }
