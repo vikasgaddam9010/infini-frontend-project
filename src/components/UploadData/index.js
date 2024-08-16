@@ -16,13 +16,10 @@ const renderState = {
 }
 
 const UploadData = () => {
-  //const [state, setState] = useState(renderState.sucess)
   const [title, setTitle] = useState('')
   const [existingData, setExistingData] = useState([])
   const [media, setMedia] = useState([])
   const [editMode, setEditMode] = useState(false)
-
-  //console.log(existingData)
 
   const { event_id } = useParams();
   const navigator = useNavigate()
@@ -37,7 +34,6 @@ const UploadData = () => {
     , [])
 
   const fetchEventDetails = async (id ) => {
-    //setState(renderState.loader)
     const url = `https://node-infini.onrender.com/get-event-details/${id}`
 
     const options = {
@@ -51,19 +47,11 @@ const UploadData = () => {
     const serverRes = await fetch(url, options)
     if(serverRes.ok){
       const serverResJsonData = await serverRes.json()
-     // console.log(serverResJsonData, JSON.parse(serverResJsonData.uploads))
       setExistingData(serverResJsonData)
-
       setTitle(serverResJsonData.event_title)
-
-    //  console.log(serverResJsonData)
-
       const updated = JSON.parse(serverResJsonData.uploads)
-   //   console.log(updated)
       setMedia(updated)
-     //(renderState.sucess)
     }else{
-      //setState(renderState.failed)
     }
   }  
   
@@ -81,7 +69,7 @@ const UploadData = () => {
     }
     const cloudRes = await fetch(url, options)
      const r = await cloudRes.json()
-     //console.log(r)
+   
      return {url:r.url, name:r.display_name+"."+r.format, type: r.format}
   }
 
@@ -96,7 +84,7 @@ const UploadData = () => {
     if(media.length === 0){
       return alert("Please Upload Photos/Videos")      
     }
-    //setState(renderState.loader)
+    
     const r = media.map(eachMedia => {
       if(eachMedia.type.split("/")[0] === "image"){
         return mediaUpload(eachMedia, eachMedia.type.split("/")[0], 'image_upload')      
@@ -129,19 +117,13 @@ const UploadData = () => {
     const serverRes = await fetch(url, options)
     await serverRes.json()
     if(serverRes.ok){
-      //setState(renderState.sucess)
       return navigator('/events-list')
-    }else{
-      //setState(renderState.failed)
     }
   }
 
   const submitEditHandler = async event => {
     event.preventDefault()
-    //setState(renderState.loader)
-
     const filteredMedia = media.filter(each => each.lastModified)
-    
     const r = filteredMedia.map(each=>{
 
         if(each.type.split("/")[0] === "image"){
@@ -178,11 +160,7 @@ const UploadData = () => {
    
       
       if(serverRes.ok){
-        //setState(renderState.sucess)
         navigator(`/events-list`)
-
-      }else{
-        //setState(renderState.failed)
       }
   }
 
@@ -195,20 +173,15 @@ const UploadData = () => {
 
       const mergeAndRemoveDuplicates = (arr1, arr2) => {
           const combined = [...arr1, ...arr2];
-
           const uniqueMap = new Map();
-
-          combined.forEach(item => {
-            
+          combined.forEach(item => {            
               if (!uniqueMap.has(item.name)) {
                   uniqueMap.set(item.name, item);
               }
           });
           return Array.from(uniqueMap.values());
       };
-
       const result = mergeAndRemoveDuplicates(media, newFiles);
-
       setMedia(result);
     }
   }
@@ -217,7 +190,6 @@ const UploadData = () => {
     const result = media.filter(each => each.name !== name)
     setMedia(result)
   }
-
 
 const getEachMediaName = () =>(
     media.length > 0 && (
@@ -240,7 +212,6 @@ const getEachMediaName = () =>(
   const getSucessView = () => (
     <>
       <Header/>
-    
     <div className='main-container'>   
       <h1>{editMode ? 'Edit Media' : 'Upload Media'}</h1>
       <form onSubmit={editMode ? submitEditHandler : submitHandler} className='form-container'>
@@ -273,7 +244,6 @@ const getEachMediaName = () =>(
           {editMode ? 'Edit Input Fileds' : 'Upload Media'}
         </button>
         <Link to="/events-list" type="button" className='btn'>{editMode ? 'Cancel': 'Back'}</Link>
-        
         </div>
       </form>
     </div>
