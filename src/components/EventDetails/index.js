@@ -1,10 +1,6 @@
-import {json, useNavigate, useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import {useEffect, useState} from 'react'
 import Cookies from 'js-cookie'
-
-import Modal from 'react-modal';
-import { WhatsappShareButton, TelegramShareButton, WhatsappIcon, TelegramIcon } from 'react-share';
-
 
 import Header from '../Header'
 import LoadingView from '../LoadingView'

@@ -6,7 +6,7 @@ import {useNavigate, useParams, Link} from 'react-router-dom'
 
 import './index.css'
 import Header from '../Header'
-import LoadingView from '../LoadingView'
+//import LoadingView from '../LoadingView'
 
 const renderState = {
   loader: 'loading',
@@ -16,7 +16,7 @@ const renderState = {
 }
 
 const UploadData = () => {
-  const [state, setState] = useState(renderState.sucess)
+  //const [state, setState] = useState(renderState.sucess)
   const [title, setTitle] = useState('')
   const [existingData, setExistingData] = useState([])
   const [media, setMedia] = useState([])
@@ -37,7 +37,7 @@ const UploadData = () => {
     , [])
 
   const fetchEventDetails = async (id ) => {
-    setState(renderState.loader)
+    //setState(renderState.loader)
     const url = `https://node-infini.onrender.com/get-event-details/${id}`
 
     const options = {
@@ -61,11 +61,9 @@ const UploadData = () => {
       const updated = JSON.parse(serverResJsonData.uploads)
    //   console.log(updated)
       setMedia(updated)
-
-      
-      setState(renderState.sucess)
+     //(renderState.sucess)
     }else{
-      setState(renderState.failed)
+      //setState(renderState.failed)
     }
   }  
   
@@ -98,7 +96,7 @@ const UploadData = () => {
     if(media.length === 0){
       return alert("Please Upload Photos/Videos")      
     }
-    setState(renderState.loader)
+    //setState(renderState.loader)
     const r = media.map(eachMedia => {
       if(eachMedia.type.split("/")[0] === "image"){
         return mediaUpload(eachMedia, eachMedia.type.split("/")[0], 'image_upload')      
@@ -129,19 +127,18 @@ const UploadData = () => {
     }
 
     const serverRes = await fetch(url, options)
-    const json = await serverRes.json()
+    await serverRes.json()
     if(serverRes.ok){
-      setState(renderState.sucess)
-      console.log("Sucess")
+      //setState(renderState.sucess)
       return navigator('/events-list')
     }else{
-      setState(renderState.failed)
+      //setState(renderState.failed)
     }
   }
 
   const submitEditHandler = async event => {
     event.preventDefault()
-    setState(renderState.loader)
+    //setState(renderState.loader)
 
     const filteredMedia = media.filter(each => each.lastModified)
     
@@ -156,7 +153,6 @@ const UploadData = () => {
     const reUploadedMedia = media.concat(uploadedData)
 
     const modified = reUploadedMedia.filter(each => each.url)
-
 
     modified.event_id = existingData.event_id
     modified.username = existingData.username
@@ -182,11 +178,11 @@ const UploadData = () => {
    
       
       if(serverRes.ok){
-        setState(renderState.sucess)
+        //setState(renderState.sucess)
         navigator(`/events-list`)
 
       }else{
-        setState(renderState.failed)
+        //setState(renderState.failed)
       }
   }
 
@@ -284,17 +280,7 @@ const getEachMediaName = () =>(
     </>
   )
 
-  const getFailedView = () => {
-    <button>retry</button>
-  }
-
-  if(renderState.loader === state){
-    return <LoadingView/>
-  }else if (renderState.sucess === state){
-    return getSucessView()
-  }else if (renderState.failed === state) {
-    return getFailedView()
-  }
+  return getSucessView()
 }
 
 export default UploadData
