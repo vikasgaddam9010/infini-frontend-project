@@ -43,7 +43,7 @@ const GusetEventDetails = () => {
         } 
     }  
     console.log(useParams())
-    const link=`https://infini-frontend-project.vercel.app/${eventDetails.username}/${eventDetails.event_id}`
+    const link=`https://infini-frontend-project.vercel.app/${eventDetails.username}/mode=GUEST`
     console.log(link)
 
     const getSccussView = () => (
