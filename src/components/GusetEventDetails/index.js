@@ -42,9 +42,8 @@ const GusetEventDetails = () => {
             setState(renderState.failed)
         } 
     }  
-    console.log(useParams())
-    const link=`https://infini-frontend-project.vercel.app/${eventDetails.username}/mode=GUEST`
-    console.log(link)
+    
+    const link=`https://infini-frontend-project.vercel.app/${eventDetails.event_id}/mode=GUEST`
 
     const getSccussView = () => (
         <>      
