@@ -16,7 +16,7 @@ const Registration = () => {
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [dbRes , setDbRes] = useState('')
-  const [state, setState] = useState(renderState.sucess)
+  const [state, setState] = useState('')
   const navigator = useNavigate()
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const Registration = () => {
       }
     }
   }
-
+  const apiState = state === renderState.loader ? "Registering" : "Register"
   return (
     <div className='main-container'>
     <form onSubmit={submitHandler} className='form-container'>
@@ -83,7 +83,7 @@ const Registration = () => {
         type='password'
       />
       <button type='submit' className='btn'>
-        Register Here
+        {apiState}
       </button>
       <Link to="/login/" className='login-btn'>
         Login

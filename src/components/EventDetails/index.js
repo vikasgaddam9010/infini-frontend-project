@@ -85,16 +85,15 @@ const EventDetails = () => {
                     <Popup
                         modal
                         trigger={
-                        <button type="button"  style={{color: 'brown', border:"1px solid brown"}} className="button-edit-delete">
+                        <button type="button"  style={{color: 'green', border:"1px solid green"}} className="button-edit-delete">
                             Share
                         </button>
                         }
                     >
                         {close => (
-                        <div className='pop-up-constainer' style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"space-around"}}>
+                        <div className='pop-up-container' style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"space-around"}}>
                             <div style={{display:'flex', justifyContent:"center"}}>
                                 <span>Click to Copy the Link</span>
-
                                 <CopyButton textToCopy={link}/>
                             </div>
                             <button
@@ -107,7 +106,31 @@ const EventDetails = () => {
                         </div>
                         )}
                     </Popup>
-                    <button onClick={handleToDeleteEvent} style={{color: 'red', border:"1px solid red"}} className='button-edit-delete'>Delete</button>
+                    <Popup
+                        modal
+                        trigger={
+                            <button  style={{color: 'red', border:"1px solid red"}} className='button-edit-delete'>Delete</button>
+                        }
+                    >
+                        {close => (
+                        <div className='pop-up-container' style={{padding:"30px 50px", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"space-between"}}>
+                            <p style={{padding:"0px", margin:"0px"}}>Are You Sure To Delete Event ???</p>
+                            <p style={{fontSize:"28px", padding:"0px", margin:"0px"}}>😲</p>
+                            <div>
+                            <button type="button"
+                                style={{color: 'red',marginRight:"10px", border:"1px solid red", padding:"5px 12px", borderRadius:"3px", backgroundColor:"white"}} onClick={handleToDeleteEvent}>Yes</button>                            
+                            <button
+                                type="button"
+                                style={{color: 'green', marginLeft:"10px",   border:"1px solid green", padding:"5px 12px", borderRadius:"3px", backgroundColor:"white"}}
+                                onClick={() => close()}
+                                >
+                                No
+                            </button>
+                            </div>                            
+                        </div>
+                        )}
+                    </Popup>
+                    
                 </div>
             </div>
         <div className='list'>
