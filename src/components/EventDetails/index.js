@@ -37,7 +37,6 @@ const EventDetails = () => {
         const serverRes = await fetch(url, options)
 
         const serverResJsonData = await serverRes.json()
-        //console.log(serverResJsonData)
         if(serverRes.ok){
             setEventDetails(serverResJsonData.dbRes)
             const updatedMedia = serverResJsonData.dbRes.uploads
@@ -57,18 +56,19 @@ const EventDetails = () => {
                 "Authorization" : `Bearer ${jwtToken}`,                
             }
         }
-
         const serverRes = await fetch(url, options)   
 
         if(serverRes.ok){
             const sjsonData = await serverRes.json()
-            console.log(sjsonData)
             return navigator("/events-list/")
-        }   
+        }       
     }
 
+    let link 
 
-    const link=`https://infini-frontend-project.vercel.app/${eventDetails.username}/${event_id}/mode=GUEST`
+    if(eventDetails !== undefined){
+        link=`https://infini-frontend-project.vercel.app/${eventDetails.username}/${eventDetails.event_id}/mode=GUEST`
+    }
 
     const getSccussView = () => (
         <>
@@ -118,13 +118,13 @@ const EventDetails = () => {
                             <p style={{fontSize:"28px", padding:"0px", margin:"0px"}}>😲</p>
                             <div>
                             <button type="button"
-                                style={{color: 'red',marginRight:"10px", border:"1px solid red", padding:"5px 12px", borderRadius:"3px", backgroundColor:"white"}} onClick={handleToDeleteEvent}>Yes</button>                            
+                                style={{color: 'red',marginRight:"10px", border:"1px solid red", padding:"5px 12px", borderRadius:"3px", backgroundColor:"white"}} onClick={handleToDeleteEvent}>Yes ❌</button>                            
                             <button
                                 type="button"
                                 style={{color: 'green', marginLeft:"10px",   border:"1px solid green", padding:"5px 12px", borderRadius:"3px", backgroundColor:"white"}}
                                 onClick={() => close()}
                                 >
-                                No
+                                No ✔️
                             </button>
                             </div>                            
                         </div>

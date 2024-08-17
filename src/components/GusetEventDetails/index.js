@@ -31,11 +31,10 @@ const GusetEventDetails = () => {
         }
         const serverRes = await fetch(url, options)
         const serverResJsonData = await serverRes.json()
-        console.log(serverRes, serverResJsonData)
+        
         if(serverRes.ok){
             setEventDetails(serverResJsonData.message[0])
             const updatedMedia = serverResJsonData.message[0].uploads
-            console.log(updatedMedia)
             setMedialinks(JSON.parse(updatedMedia))
             setState(renderState.sucess)
         }else{
@@ -55,7 +54,7 @@ const GusetEventDetails = () => {
                     <p>Event Title: <span>{eventDetails.event_title}</span></p>
                 </div>
                 <div className='column'>
-                    <button disabled style={{color: 'grey', border:"1px solid grey"}} className='button-edit-delete'>Edit</button>
+                    <button  disabled style={{color: 'grey', cursor:'not-allowed', border:"1px solid grey"}} className='button-edit-delete'>Edit</button>
                     <Popup
                         modal
                         trigger={
@@ -80,7 +79,7 @@ const GusetEventDetails = () => {
                         </div>
                         )}
                     </Popup>
-                    <button disabled style={{color: 'grey', border:"1px solid grey"}} className='button-edit-delete'>Delete</button>
+                    <button disabled style={{color: 'grey', cursor:'not-allowed', border:"1px solid grey"}} className='button-edit-delete'>Delete</button>
                 </div>
             </div>
         <div className='list'>

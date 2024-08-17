@@ -99,7 +99,6 @@ const UploadData = () => {
       }
     })
     const uploadedData = await Promise.all(r) //waits for all responses to be done.
-
     
     const files = JSON.stringify(uploadedData)
 
@@ -130,6 +129,12 @@ const UploadData = () => {
 
   const submitEditHandler = async event => {
     event.preventDefault()
+    if(title === ""){
+      return alert("Plase Enter the Title")
+    }    
+    if(media.length === 0){
+      return alert("Please Upload Photos/Videos")      
+    }
     setState(renderState.loader)
     const filteredMedia = media.filter(each => each.lastModified)
     const r = filteredMedia.map(each=>{
