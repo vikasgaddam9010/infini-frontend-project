@@ -59,7 +59,7 @@ const GusetEventDetails = () => {
                     <Popup
                         modal
                         trigger={
-                        <button type="button"  style={{color: 'brown', border:"1px solid brown"}} className="button-edit-delete">
+                        <button type="button" style={{color: 'brown', border:"1px solid brown"}} className="button-edit-delete">
                             Share
                         </button>
                         }
@@ -72,7 +72,7 @@ const GusetEventDetails = () => {
                             </div>
                             <button
                                 type="button"
-                                style={{color: 'black', border:"1px solid brown", borderRadius:"5px"}}
+                                style={{color: 'black', border:"1px solid brown", borderRadius:"5px", padding:"5px 10px"}}
                                 onClick={() => close()}
                                 >
                                 Close

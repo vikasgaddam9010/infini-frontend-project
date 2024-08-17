@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {useNavigate, Link} from 'react-router-dom'
 import Cookies from 'js-cookie'
 
@@ -9,6 +9,14 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [errMsg, setErrMsg] = useState('')
   const navigator = useNavigate()
+
+  useEffect(() => {
+    const jwt = Cookies.get("jwt")
+    if(jwt){
+      return navigator("/events-list/")
+    }
+
+  }, [])
 
   const submitHandler =  async event => {
     event.preventDefault()
@@ -29,7 +37,11 @@ const Login = () => {
       navigator('/events-list')
     }
   }
-  //Cookies.remove('jwt');
+  //Cookies.remove('jwt');\
+  const jwt = Cookies.get("jwt")
+  if(jwt){
+    return navigator("/events-list/")
+  }
   return (
     <div className='main-container'>
       <form onSubmit={submitHandler} className='form-container'>

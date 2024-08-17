@@ -1,9 +1,9 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {useNavigate, Link} from 'react-router-dom'
 import {v4} from 'uuid'
+import Cookies from 'js-cookie'
 
 import './index.css'
-import LoadingView from '../LoadingView'
 
 const renderState = {
   loader: 'loading',
@@ -18,6 +18,13 @@ const Registration = () => {
   const [dbRes , setDbRes] = useState('')
   const [state, setState] = useState(renderState.sucess)
   const navigator = useNavigate()
+
+  useEffect(() => {
+    const jwt = Cookies.get("jwt")
+    if(jwt){
+      return navigator("/events-list/")
+    }
+  }, [])
 
   const submitHandler = async event => {
     event.preventDefault()
@@ -50,7 +57,6 @@ const Registration = () => {
       }
     }
   }
-
 
   return (
     <div className='main-container'>
