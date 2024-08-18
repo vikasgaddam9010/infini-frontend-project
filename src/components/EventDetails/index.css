@@ -58,6 +58,7 @@ button{
 }
 @media (max-width: 576px) {
     .pop-up-container{
-        width: 70%;
+        text-align: center;
+        width: 90%;
     }    
 }
