@@ -56,9 +56,8 @@ span{
 button{
     font-weight: 600;
 }
-
 @media (max-width: 576px) {
     .pop-up-container{
-        width:70px;
+        width: 70%;
     }    
 }
