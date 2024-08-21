@@ -9,7 +9,10 @@ import GusetEventDetails from './components/GusetEventDetails'
 
 import './App.css';
 
-const App = () => (
+const App = () => {
+  document.title = "MediaPicker"
+  
+  return (
   <BrowserRouter>
     <Routes>
       <Route path='/register/' element={<Registration />} />
@@ -24,6 +27,6 @@ const App = () => (
       </Route>
     </Routes>
   </BrowserRouter>
-);
+)}
 
 export default App;
