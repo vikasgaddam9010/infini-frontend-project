@@ -24,6 +24,8 @@ const EventDetails = () => {
 
     useEffect(() => {getFullList()}, [])
 
+    document,title = eventDetails.event_title
+
     const getFullList = async () => {
         setState(renderState.loader)
         const url = `https://node-infini.onrender.com/all-items/${event_id}/`
