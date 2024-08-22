@@ -10,7 +10,7 @@ import GusetEventDetails from './components/GusetEventDetails'
 import './App.css';
 
 const App = () => {
-  document.title = "Event Saver"
+  document.title = "Event Saver - Log In"
   
   return (
   <BrowserRouter>
