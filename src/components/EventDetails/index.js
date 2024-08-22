@@ -24,7 +24,7 @@ const EventDetails = () => {
 
     useEffect(() => {getFullList()}, [])
 
-    document,title = eventDetails.event_title
+    document.title = `${eventDetails.event_title} EVent`
 
     const getFullList = async () => {
         setState(renderState.loader)
