@@ -10,7 +10,7 @@ import GusetEventDetails from './components/GusetEventDetails'
 import './App.css';
 
 const App = () => {
-  document.title = "MediaPicker"
+  document.title = "Event Saver"
   
   return (
   <BrowserRouter>
